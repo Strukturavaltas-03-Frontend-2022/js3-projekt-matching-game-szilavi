@@ -69,3 +69,7 @@ img {
 .cardfront {
   transform: rotateY(180deg);
 }
+
+.cardback {
+  position:absolute
+}

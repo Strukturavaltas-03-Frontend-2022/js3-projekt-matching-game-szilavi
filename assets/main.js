@@ -15,7 +15,8 @@ const counter = document.querySelector(".counter");
 const youWinDiv = document.querySelector(".win");
 let plusPoint = 0;
 
-function addPoint(plusPoint) {
+function addPoint() {
+  plusPoint++
   counter.textContent = plusPoint;
 }
 
@@ -54,26 +55,30 @@ setUp(images);
 
 // Innen jön a flippelés
 
-const card = document.querySelectorAll(".card");
+const cards = document.querySelectorAll(".card");
 
-card.forEach((element) => {
+cards.forEach((element) => {
   element.addEventListener("click", clickCard);
 });
 
 function clickCard(event) {
-  event.currentTarget.classList.toggle("flippedCard");
-  const flipped = document.querySelectorAll(".card.flippedCard");
-  if (flipped.length > 1) {
-    setTimeout(() => {
-      card.forEach((cards) => {
-        cards.classList.remove("flippedCard");
-      });
-    }, 1000);
-    checker();
+  const flippedCards = document.querySelectorAll(".card.flippedCard");
+  if (flippedCards.length < 2) {
+
+    event.currentTarget.classList.toggle("flippedCard");
+    const flipped = document.querySelectorAll(".card.flippedCard");
+    if (flipped.length > 1) {
+      setTimeout(() => {
+        cards.forEach((cards) => {
+          cards.classList.remove("flippedCard");
+        });
+      }, 1000);
+      checker();
+    }
+    if (plusPoint !== 5) {
+      startGame = true;
+    } else resetTable();
   }
-  if (plusPoint !== 5) {
-    startGame = true;
-  } else resetTable();
 }
 
 //itt lecsekkolom, hogy vajon a két kártya egyezik-e
@@ -88,8 +93,7 @@ function checker() {
     console.log("pair");
     cards[0].parentElement.parentElement.classList.add("aPair");
     cards[1].parentElement.parentElement.classList.add("aPair");
-    plusPoint++; //ha eszembe jut megkérdezném, hogy az miért nem működik, hogy ezt berakom az addPoint functionba
-    addPoint(plusPoint);
+    addPoint();
   } else console.log("not a pair");
 }
 
@@ -109,12 +113,6 @@ setInterval(() => {
 const showTimer = function () {
   let minutes = Math.floor(timer / 60);
   let seconds = timer % 60;
-  if (minutes < 10) {
-    `0${minutes}`;
-  } else minutes;
-  if (seconds < 10) {
-    `0${seconds}`;
-  } else seconds;
   showTime.textContent =
     minutes.toString().padStart(2, "0") +
     ":" +
